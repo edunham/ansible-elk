@@ -2,6 +2,12 @@
 - name: Include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
+- name: Enable Universe repository
+  apt_repository: 
+    repo="deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} universe"
+    state=present
+  when: ansible_distribution == "Ubuntu"
+
 - name: Install common apt packages
   apt: pkg={{ item }} state=latest
   with_items: elk_common_packages
